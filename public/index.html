@@ -4,7 +4,6 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Node/Angular Vessel App</title>
-
 	<style>
 		html 					{ overflow-y:scroll; }
 		body 					{ font-family: sans-serif;}
@@ -23,8 +22,8 @@
 			padding: 20px;
 	    border-radius: 10px;
 	    position: absolute;
-	    top: 0;
-	    right: 0;
+	    top: 15px;
+	    right: 15px;
 	    background: rgb(183, 213, 179);
 	    font-size: 14px;
 	    text-align: end;
@@ -92,7 +91,6 @@
     	top: 5px;
     	font-size: 16px;
 	  }
-
 		}
 	</style>
 
@@ -112,27 +110,24 @@
 		
   	<form name="form" >
 		 	<ul ng-repeat="(key, val) in vessel.selectedVessleInfo"> 
-
-		 		<div ng-if= "key =='_id'">
+		 		<!-- only label  -->
+		 		<div ng-if= "infoType(key) =='label'">
 		 			<label> Ship ID : {{val}} </label>
 		 		</div>
-
-		 		<div ng-if= "key =='reported_port'">
-		 			<label> {{key}}
-		 				<ul ng-repeat="(k, v) in vessel.selectedVessleInfo.reported_port">
-				      <label> {{k}}
-					      <input type="text" ng-init="vessel.selectedVessleInfo.reported_port[k]=v" ng-model="vessel.selectedVessleInfo.reported_port[k]"/>
-				    	</label>		
-				     </ul>
-		    	</label>		
-		 		</div>
-		 		
-		 		<div ng-if= "key !='_id' && key !='reported_port'">
+		 		<!-- nested hash -->
+		 		<div ng-if= "infoType(key) =='nested_hash'">
+	 				<ul ng-repeat="(k, v) in vessel.selectedVessleInfo[key]">
+			      <label> {{key}}: {{k}}
+				      <input type="text" ng-init="vessel.selectedVessleInfo[key][k]=v" ng-model="vessel.selectedVessleInfo[key][k]"/>
+			    	</label>		
+			     </ul>
+		 		</div>	 		
+		 		<!-- regular hash -->
+		 		<div ng-if= "infoType(key) =='hash'">
 		 			<label> {{key}}
 			      <input type="text" ng-init="vessel.selectedVessleInfo[key]=val" ng-model="vessel.selectedVessleInfo[key]"/>
 		    	</label>		 			
 		 		</div>
-
 		 	</ul>
 		 	<input class= "button" ng-submit="form.$valid" type="submit" ng-click="update(vessel.selectedVessleInfo)" value="Save" />
  		</form>

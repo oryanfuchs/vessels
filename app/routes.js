@@ -17,7 +17,7 @@ function updateVesselsBetweenCordinates(vessel){
       vesselCoordinates[1] >= COORDINATE_Y_FROM &&  
       vesselCoordinates[1] <= COORDINATE_Y_TO )
   {
-      vesselsBetweenCoordinates.push({id: vessel._id,coordinates: vesselCoordinates} )
+      vesselsBetweenCoordinates.push({id: vessel._id, coordinates: vesselCoordinates} )
   }
 }
 
@@ -29,19 +29,20 @@ function addVesselsBySize(id, size){
   // new size
   var vesselInfo = {id: id, coordinates: vesselsLocationMap[id].lastpos.geometry.coordinates}
   if(vesselsBySize[size] == null){
-      vesselsBySize[size] = [vesselInfo]
+    vesselsBySize[size] = [vesselInfo]
   }
   else {
-      vesselsBySize[size].push(vesselInfo)
+    vesselsBySize[size].push(vesselInfo)
   }
 }
 function removeVesselsBySize(id, size){
-  // last one
+  // last one - delete key
   if(vesselsBySize[size].length == 1){
-      delete vesselsBySize[size]
+    delete vesselsBySize[size]
   }
+  //remove id from size ids
   else {
-      vesselsBySize[size] = vesselsBySize[size].filter(function(x){ return x.id != id})
+    vesselsBySize[size] = vesselsBySize[size].filter(function(x){ return x.id != id})
   }
 }
 function updateVesselsBySize(vesselId, oldSize, newSize ){
@@ -63,7 +64,6 @@ function createHashFromFile(filePath, map, location){
       }
       else{
         if(vessel.size != undefined){
-          // new size
           addVesselsBySize(vessel._id, vessel.size)
         }
       }
@@ -88,7 +88,7 @@ module.exports = function (app) {
     if(firstInit) {
       importData();
     }
-    //get all the biggest vessels
+    //get all the vessels of max size
     if(req.query.size == "max"){
       var allSizes = Object.keys(vesselsBySize)
       //sizes are sorted, max size is the last one
@@ -97,7 +97,7 @@ module.exports = function (app) {
     }
     //get all vesseles bewtween given cordinatis
     else if(req.query.coordinates == "fix"){
-      res.json(vesselsBetweenCoordinates )
+      res.json(vesselsBetweenCoordinates)
     }
     //get all  vessels             
     else{

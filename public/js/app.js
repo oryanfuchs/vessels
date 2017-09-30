@@ -11,7 +11,7 @@ app.directive('myMap', ['Vessels', function(Vessels) {
   var mapOptions = {
     center: new google.maps.LatLng(15, 30),
     zoom: 3,
-    mapTypeId: google.maps.MapTypeId.SATELLITE,
+    mapTypeId: google.maps.MapTypeId.HYBRID,
     scrollwheel: false
   };
    
@@ -40,7 +40,6 @@ app.directive('myMap', ['Vessels', function(Vessels) {
   }
 
   var markVessels = function(vessles, color){
-
     //clean onld maekers
 	  queryMarkers.forEach(function(marker){
 		  marker.setMap(null)
