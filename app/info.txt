@@ -1,0 +1,71 @@
+[
+  {
+    "_id": "5498517ab68ca1ede0612bba",
+    "oldShipId": 14322,
+    "mmsi": 247179700,
+    "imo": null,
+    "name": "GRECALE",
+    "callsign": "IIOU",
+    "owner": null,
+    "reported_port": {
+      "ts": "2016-08-13T19:30:00.000Z",
+      "name": "CAPRI"
+    },
+    "vessel_class": "Unknown",
+    "size": 22,
+    "drought": 1.399999976158142,
+    "flag": "Italy",
+    "is_alive": true,
+    "deadweight": -1,
+    "max_draught": "-1 m",
+    "vessel_type": "unknown",
+    "number_of_blips": 4876,
+    "draught": 1.399999976158142
+  },
+  {
+    "_id": "5498517ab68ca1ede0612c1f",
+    "oldShipId": 14428,
+    "mmsi": 271043118,
+    "imo": null,
+    "name": "PARADISE WINDS",
+    "callsign": null,
+    "owner": null,
+    "reported_port": {
+      "ts": null,
+      "name": null
+    },
+    "vessel_class": "Unknown",
+    "size": 0,
+    "drought": 0,
+    "flag": "Turkey",
+    "is_alive": true,
+    "deadweight": -1,
+    "max_draught": "-1 m",
+    "vessel_type": "unknown",
+    "number_of_blips": 1769,
+    "draught": 0
+  },
+{
+    "_id": "5498517ab68ca1ede0612c20",
+    "oldShipId": 14430,
+    "mmsi": 271010698,
+    "imo": null,
+    "name": "OKYANUS",
+    "callsign": null,
+    "owner": null,
+    "reported_port": {
+      "ts": null,
+      "name": null
+    },
+    "vessel_class": "Unknown",
+    "size": 0,
+    "drought": 0,
+    "flag": "Turkey",
+    "is_alive": true,
+    "deadweight": -1,
+    "max_draught": "-1 m",
+    "vessel_type": "unknown",
+    "number_of_blips": 10575,
+    "draught": 0
+  }
+]

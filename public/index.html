@@ -1,0 +1,134 @@
+<!doctype html>
+<html ng-app="myVessel">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Node/Angular Vessel App</title>
+
+	<style>
+		html 					{ overflow-y:scroll; }
+		body 					{ font-family: sans-serif;}
+		#vessel-list 				{ margin-bottom:30px; }
+		#vessel-form 	 			{ margin-bottom:50px; }
+		#gmaps{
+    	width: 100vw;
+    	position: absolute;
+    	height: 100vh;
+		}
+		#mymap{
+    	width: 950px;
+    	height: 950px;
+		}
+		.popup{
+			padding: 20px;
+	    border-radius: 10px;
+	    position: absolute;
+	    top: 0;
+	    right: 0;
+	    background: rgb(183, 213, 179);
+	    font-size: 14px;
+	    text-align: center;
+		}
+		label{
+			font-size: 16px;
+			font-weight: bold;
+    	color: #575757;
+		}
+		form {
+			overflow: scroll;
+    	max-height: 45vh;
+    	padding-bottom: 40px;
+  	}
+		button, .button{
+			background-color: #4CAF50;
+	    border: none;
+	    color: white;
+	    padding: 15px 32px;
+	    text-align: center;
+	    text-decoration: none;
+	    display: inline-block;
+	    font-size: 16px;
+	    cursor: pointer;
+	    border-radius: 10px;
+	    margin: 10px;
+		}
+		.button {
+  		width: 90%;
+	    position: absolute;
+	    bottom: 0;
+	    right: 0;
+    }
+		.circle{
+    	font-size: 60px;
+	    border-radius: 50%;
+	    width: 100px;
+	    height: 100px;
+	    background: #6a92fd;
+	   }
+	  .queries{
+	   		width: 300px;
+    		background: #b7d5b3;
+    		border-radius: 10px;
+	   }
+	  .top{
+	   	position: absolute;
+	    top: 0;
+	    z-index: 1;
+	  }
+	  input{
+	  	padding: 12px 20px;
+   		border: 1px solid #ccc;
+    	border-radius: 4px;
+    	display: block;
+    	margin: auto;
+	  }
+	  ul{
+	  	padding: 0
+	  }
+
+		}
+	</style>
+
+	<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script> 
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+	<script src="js/controllers/main.js"></script> 
+	<script src="js/services/vessels.js"></script> 
+	<script src="js/core.js"></script>
+
+</head>
+<body ng-controller="mainController">
+
+	<div my-map=""></div>
+
+	<div class ="popup" ng-show="vessel.info">
+		
+  	<form name="form" >
+		 	<ul ng-repeat="(key, val) in vessel.selectedVessleInfo"> 
+
+		 		<div ng-if= "key =='_id'">
+		 			<label> Ship ID : {{val}} </label>
+		 		</div>
+
+		 		<div ng-if= "key =='reported_port'">
+		 			<label> {{key}}
+		 				<ul ng-repeat="(k, v) in vessel.selectedVessleInfo.reported_port">
+				      <label> {{k}}
+					      <input type="text" ng-init="vessel.selectedVessleInfo.reported_port[k]=v" ng-model="vessel.selectedVessleInfo.reported_port[k]"/>
+				    	</label>		
+				     </ul>
+		    	</label>		
+		 		</div>
+		 		
+		 		<div ng-if= "key !='_id' && key !='reported_port'">
+		 			<label> {{key}}
+			      <input type="text" ng-init="vessel.selectedVessleInfo[key]=val" ng-model="vessel.selectedVessleInfo[key]"/>
+		    	</label>		 			
+		 		</div>
+
+		 	</ul>
+		 	<input class= "button" ng-submit="form.$valid" type="submit" ng-click="update(vessel.selectedVessleInfo)" value="Save" />
+ 		</form>
+	</div>
+
+</body>
+</html>

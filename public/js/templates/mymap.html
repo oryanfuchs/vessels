@@ -1,0 +1,18 @@
+<div id="mymap">
+
+  <div class="top">
+    <button class="circle" ng-click="showQueries = !showQueries" > ? </button>
+
+    <div class="queries" ng-show="showQueries">
+      <button ng-click="max= markMaxSizeVessels()" > Find biggest ship </button>
+      <button ng-click="markVesselsBetweenCoordinates()"> Find all vessels with coordinate between (28,40) and (30,42) </button>
+    </div>
+  </div>
+
+  <div id="gmaps" class="map"></div>
+
+</div>
+
+
+
+
