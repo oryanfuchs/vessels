@@ -1,23 +1,22 @@
 angular.module('vesselService', []).factory('Vessels', ['$http',function($http) {
 
-
 		var factory = {};
 		factory.selectedVessleInfo = {}
 		factory.info = false;
 	
-		factory.index = function() {
+		factory.getAll = function() {
 			return $http.get('/api/vessels');
 		},
 		factory.getMax = function(){
-			return $http.get('/api/vesselsMax');
+			return $http.get('/api/vessels?size=max');
 		},
-		factory.getBetweenCoordinates = function(){
-			return $http.get('/api/vesselsBetweenCoordinates');
+		factory.getByCoordinates = function(){
+			return $http.get('/api/vessels?coordinates=fix');
 		},
 		factory.update = function(id, vesselData){
 			return $http.put('/api/vessels/' + id, vesselData);
 		},
-		factory.show = function(id){
+		factory.get = function(id){
 			var data =  $http.get('/api/vessels/' + id);
 			data.then(function(value) {
 				factory.selectedVessleInfo = {}

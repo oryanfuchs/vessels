@@ -11,7 +11,7 @@ app.directive('myMap', ['Vessels', function(Vessels) {
   var mapOptions = {
     center: new google.maps.LatLng(15, 30),
     zoom: 3,
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    mapTypeId: google.maps.MapTypeId.SATELLITE,
     scrollwheel: false
   };
    
@@ -35,7 +35,7 @@ app.directive('myMap', ['Vessels', function(Vessels) {
 	  markers.push(marker);
 	  
 	  google.maps.event.addListener(marker, 'click', function () {	 
-		  Vessels.show(id);
+		  Vessels.get(id);
 	  });
   }
 
@@ -60,7 +60,7 @@ app.directive('myMap', ['Vessels', function(Vessels) {
    }
 
    scope.markVesselsBetweenCoordinates= function (){
-	  Vessels.getBetweenCoordinates()
+	  Vessels.getByCoordinates()
 		  .success(function(vessles) {
 			 markVessels(vessles)
 	  });
@@ -68,7 +68,7 @@ app.directive('myMap', ['Vessels', function(Vessels) {
    
   initMap();
    
-  Vessels.index().
+  Vessels.getAll().
     success(function(data) {
 	   for (var key in data) {
         var value = data[key];

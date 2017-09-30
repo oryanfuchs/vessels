@@ -1,7 +1,7 @@
 {
   "name": "node-vessel",
   "version": "0.0.1",
-  "description": "Simple vessel application.",
+  "description": "Vessel application.",
   "main": "server.js",
   "author": "Oryan",
   "dependencies": {

@@ -1,4 +1,3 @@
-
 var COORDINATE_X_FROM = 28
 var COORDINATE_Y_FROM = 40
 var COORDINATE_X_TO = 30
@@ -11,9 +10,8 @@ var vesselsBetweenCoordinates = []
 var vesselsBySize = {}
 
 
-function updateVesselsBeteenCordinates(vessel){
+function updateVesselsBetweenCordinates(vessel){
   vesselCoordinates = vessel.lastpos.geometry.coordinates;
-
   if (vesselCoordinates[0] >= COORDINATE_X_FROM &&  
       vesselCoordinates[0] <= COORDINATE_X_TO && 
       vesselCoordinates[1] >= COORDINATE_Y_FROM &&  
@@ -21,10 +19,6 @@ function updateVesselsBeteenCordinates(vessel){
   {
       vesselsBetweenCoordinates.push({id: vessel._id,coordinates: vesselCoordinates} )
   }
-}
-
-function invalid(vessel){
-  return isInvalidSize(vessel.size)
 }
 
 function isInvalidSize(size){
@@ -42,7 +36,6 @@ function addVesselsBySize(id, size){
   }
 }
 function removeVesselsBySize(id, size){
-
   // last one
   if(vesselsBySize[size].length == 1){
       delete vesselsBySize[size]
@@ -52,8 +45,12 @@ function removeVesselsBySize(id, size){
   }
 }
 function updateVesselsBySize(vesselId, oldSize, newSize ){
-  removeVesselsBySize(vesselId, oldSize)
-  addVesselsBySize(vesselId, newSize)
+  if(!isInvalidSize(oldSize)){
+    removeVesselsBySize(vesselId, oldSize)
+  }
+  if(!isInvalidSize(newSize)){
+    addVesselsBySize(vesselId, newSize)
+  }  
 }
 function createHashFromFile(filePath, map, location){
   fs = require('fs');
@@ -62,7 +59,7 @@ function createHashFromFile(filePath, map, location){
     arr.forEach(function(vessel){
       map[vessel._id] = vessel
       if(location){
-          updateVesselsBeteenCordinates(vessel)
+          updateVesselsBetweenCordinates(vessel)
       }
       else{
         if(vessel.size != undefined){
@@ -76,23 +73,36 @@ function createHashFromFile(filePath, map, location){
 }
 function importData(){
   var infoFilePath = __dirname +'/vesselInfo.txt'
-  //var infoFilePath = __dirname +'/info.txt'
   var locationFilePath = __dirname + '/vesselLocations.txt'
   createHashFromFile(locationFilePath, vesselsLocationMap, true)
   createHashFromFile(infoFilePath, vesselsInfoMap) 
   firstInit = false
 }
 
-
 module.exports = function (app) {
 
   // api ---------------------------------------------------------------------
   // get all vessel
-  app.get('/api/vessels', function (req, res) {      
-    if (firstInit){
+  app.get('/api/vessels', function (req, res) {   
+    // first time import data from files
+    if(firstInit) {
       importData();
-    }                
-    res.json(vesselsLocationMap);
+    }
+    //get all the biggest vessels
+    if(req.query.size == "max"){
+      var allSizes = Object.keys(vesselsBySize)
+      //sizes are sorted, max size is the last one
+      var maxSize = allSizes[allSizes.length-1]
+      res.json(vesselsBySize[maxSize])
+    }
+    //get all vesseles bewtween given cordinatis
+    else if(req.query.coordinates == "fix"){
+      res.json(vesselsBetweenCoordinates )
+    }
+    //get all  vessels             
+    else{
+      res.json(vesselsLocationMap);
+    }
   });
 
   // get one vessel
@@ -100,30 +110,11 @@ module.exports = function (app) {
     res.json(vesselsInfoMap[req.params.vessel_id]);
   });
 
-  // get max size vessels
-  app.get('/api/vesselsMax/', function (req, res) {  
-    var allSizes = Object.keys(vesselsBySize)
-    var maxSize = Math.max(...allSizes)
-    res.json(vesselsBySize[maxSize])
-  });
-
-  // get vessels between cordinates
-  app.get('/api/vesselsBetweenCoordinates/', function (req, res) {      
-    res.json(vesselsBetweenCoordinates )
-  });
-
   // update vessel
   app.put('/api/vessels/:vessel_id', function (req, res) {
     var id = req.params.vessel_id
     var updatedVessselData = req.body
-    if(invalid(updatedVessselData)){
-      return
-    }
     updateVesselsBySize(id, vesselsInfoMap[id].size, updatedVessselData.size)
     vesselsInfoMap[id] = updatedVessselData 
-  });
-
-  app.get('*', function (req, res) {
-    res.sendFile(__dirname + '/public/index.html'); 
   });
 };
