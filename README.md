@@ -10,5 +10,5 @@ A Node app built with Angular.
 
 1. Clone the repository: 'git clone git@github.com:oryanfuchs/vessels.git'
 2. Install the application: 'npm install'
-3. Start the server: 'node server.js'
+3. Start the server: 'node server.js' or 'npm start'
 4. View in browser at 'http://localhost:8080'
