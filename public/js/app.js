@@ -9,7 +9,7 @@ app.directive('myMap', ['Vessels', function(Vessels) {
    
   // map config
   var mapOptions = {
-    center: new google.maps.LatLng(15, 30),
+    center: new google.maps.LatLng(30, 80),
     zoom: 3,
     mapTypeId: google.maps.MapTypeId.HYBRID,
     scrollwheel: false
@@ -22,13 +22,13 @@ app.directive('myMap', ['Vessels', function(Vessels) {
     }
   }    
    
-  function setMarker(map, position, id, color, markers) {
+  function setMarker(map, position, id, icon, markers) {
     var marker;
 
     var markerOptions = {
       position: position,
       map: map,
-      icon: 'https://maps.google.com/mapfiles/ms/icons/'+color+'-dot.png'                
+      icon: icon                
 	  };
 
 	  marker = new google.maps.Marker(markerOptions);
@@ -47,7 +47,7 @@ app.directive('myMap', ['Vessels', function(Vessels) {
 	  queryMarkers =[]
 
 	  vessles.forEach(function(vessle){
-		  setMarker(map, {lng: vessle.coordinates[0], lat: vessle.coordinates[1]} , vessle.id, 'red', queryMarkers);
+		  setMarker(map, {lng: vessle.coordinates[0], lat: vessle.coordinates[1]} , vessle.id, 'https://maps.google.com/mapfiles/ms/micons/sailing.png' , queryMarkers);
 	  });
   }
 
@@ -72,7 +72,7 @@ app.directive('myMap', ['Vessels', function(Vessels) {
 	   for (var key in data) {
         var value = data[key];
         coordinates = value.lastpos.geometry.coordinates
-        setMarker(map, {lng: coordinates[0], lat: coordinates[1]} , key, 'green', allMarkers);
+        setMarker(map, {lng: coordinates[0], lat: coordinates[1]} , key, 'http://labs.google.com/ridefinder/images/mm_20_green.png', allMarkers);
       }
     });
   };
